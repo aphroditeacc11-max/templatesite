@@ -1,15 +1,15 @@
 import { CMSPage, cmsApi } from '@cms-builder/core';
 
-const PROJECT = process.env.NEXT_PUBLIC_PROJECT_NAME || 'default';
+const PROJECT = process.env.NEXT_PUBLIC_PROJECT_NAME || process.env.PROJECT_NAME || 'templatesite';
 
-export default async function Page({ params }: { params: { slug?: string[] } }) {
-  const route = '/' + (params.slug?.join('/') || '');
-  
+export default async function CatchAllPage({ params }: { params: Promise<{ slug: string[] }> }) {
+  const { slug } = await params;
+  const route = '/' + (slug || []).join('/');
   const [design, instances] = await Promise.all([
     cmsApi.getSiteContent(PROJECT).catch(() => null),
     cmsApi.getPageComponents(PROJECT, route).catch(() => []),
   ]);
-  
+
   if (!design) {
     return (
       <main className="min-h-screen flex items-center justify-center p-8">
@@ -22,12 +22,6 @@ export default async function Page({ params }: { params: { slug?: string[] } }) 
       </main>
     );
   }
-  
-  return (
-    <CMSPage 
-      design={design}
-      route={route}
-      componentInstances={instances}
-    />
-  );
+
+  return <CMSPage design={design as any} route={route} componentInstances={instances as any} />
 }

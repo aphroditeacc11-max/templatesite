@@ -1,20 +1,8 @@
 @import "tailwindcss";
+@source "../node_modules/@cms-builder/core/src/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../node_modules/@cms-builder/core/dist/**/*.{js,ts,jsx,tsx,mjs}";
 
 @theme {
   --color-primary: var(--primary-color);
   --color-secondary: var(--secondary-color);
-}
-
-@layer base {
-  :root {
-    --primary-color: #3b82f6;
-    --secondary-color: #1f2937;
-  }
-}
-
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
 }

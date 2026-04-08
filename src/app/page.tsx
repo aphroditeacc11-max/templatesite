@@ -1,9 +1,9 @@
 import { CMSPage, cmsApi } from '@cms-builder/core';
 
-const PROJECT = process.env.NEXT_PUBLIC_PROJECT_NAME || 'default';
+const PROJECT = process.env.NEXT_PUBLIC_PROJECT_NAME || process.env.PROJECT_NAME || 'templatesite';
 
-export default async function HomePage() {
-  const route = '/';
+export default async function Page() {
+  const route = "/";
   const [design, instances] = await Promise.all([
     cmsApi.getSiteContent(PROJECT).catch(() => null),
     cmsApi.getPageComponents(PROJECT, route).catch(() => []),
@@ -22,11 +22,5 @@ export default async function HomePage() {
     );
   }
 
-  return (
-    <CMSPage
-      design={design}
-      route={route}
-      componentInstances={instances}
-    />
-  );
+  return <CMSPage design={design as any} route={route} componentInstances={instances as any} />
 }
